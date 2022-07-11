@@ -9,8 +9,8 @@ import java.util.Map;
 
 public abstract class Query
 {
-    private static final char OPEN_COLUMN_BORDER = '[';
-    private static final char CLOSE_COLUMN_BORDER = ']';
+    private static char OPEN_COLUMN_BORDER;
+    private static char CLOSE_COLUMN_BORDER;
     private static final char DEFAULT_COLUMN_BORDER = '\u0000';
     private static final char VALUES_SEPARATOR = ',';
 
@@ -23,6 +23,9 @@ public abstract class Query
         this.tableName = tableName;
         this.instructions = instructions;
         this.quotationMark = quotationMark();
+        
+        OPEN_COLUMN_BORDER = getOpenColumnBorder();
+        CLOSE_COLUMN_BORDER = getCloseColumnBorder();
         
         instructions.put(InstructionType.FROM, "FROM " + tableName + " ");
     }
@@ -135,6 +138,14 @@ public abstract class Query
     protected abstract char quotationMark();
     protected abstract boolean isDataCaseSensitive();
     protected abstract String aliasForColumnsAndTables();
+    protected char getOpenColumnBorder()
+    {
+        return DEFAULT_COLUMN_BORDER;
+    }
+    protected char getCloseColumnBorder()
+    {
+        return DEFAULT_COLUMN_BORDER;
+    }
 
     public String generate()
     {
